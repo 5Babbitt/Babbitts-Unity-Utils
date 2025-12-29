@@ -17,6 +17,10 @@ namespace BabbittsUnityUtils
 
         public float GetTime() => Time;
 
+        /// <summary>
+        /// Creates a Timer with a specified initial time.
+        /// </summary>
+        /// <param name="value">Initial time for the timer</param>
         protected Timer(float value) 
         {
             initialTime = value;
@@ -64,6 +68,10 @@ namespace BabbittsUnityUtils
 
     public class CountdownTimer : Timer 
     {
+        /// <summary>
+        /// Creates a countdown timer with a specified duration.
+        /// </summary>
+        /// <param name="value">Duration of the countdown</param>
         public CountdownTimer(float value) : base(value) { }
 
         public override void Tick(float deltaTime) 
