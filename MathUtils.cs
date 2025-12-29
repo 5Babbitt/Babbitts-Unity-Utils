@@ -1,0 +1,181 @@
+using Unity.VisualScripting;
+using UnityEngine;
+
+namespace BabbittsUnityUtils
+{ 
+    public class MathUtils
+    {
+        /// <summary>
+        /// Find and return the shortest possible rotation between two quaternions
+        /// </summary>
+        /// <param name="to"></param>
+        /// <param name="from"></param>
+        /// <returns></returns>
+        public static Quaternion ShortestRotation(Quaternion to, Quaternion from)
+        {
+            if (Quaternion.Dot(to, from) < 0)
+            {
+                return to * Quaternion.Inverse(Multiply(from, -1));
+            }
+
+            else return to * Quaternion.Inverse(from);
+        }
+
+        /// <summary>
+        /// Mulitply each component of a quaternion by a float value
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="scalar"></param>
+        /// <returns></returns>
+        public static Quaternion Multiply(Quaternion input, float scalar)
+        {
+            return new Quaternion(input.x * scalar, input.y * scalar, input.z * scalar, input.w * scalar);
+        }
+
+        /// <summary>
+        /// Convert an angle in degrees to a Vector2
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static Vector2 AngleToVector2(float input)
+        {
+            Vector2 output = new(Mathf.Sin(input * Mathf.Deg2Rad), Mathf.Cos(input * Mathf.Deg2Rad));
+
+            return output.normalized;
+        }
+
+        /// <summary>
+        /// Clamp an angle between the desired origin and the clamp angle in either direction
+        /// This will be ignored if isAngleClamped is set to false
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <param name="originAngle"></param>
+        /// <param name="clampAngle"></param>
+        /// <param name="isAngleClamped"></param>
+        /// <returns></returns>
+        public static float ClampAngle(float angle, float originAngle, float clampAngle, bool isAngleClamped = true)
+        {
+            if (isAngleClamped)
+                angle = Mathf.Clamp(angle, originAngle - clampAngle, originAngle + clampAngle);
+
+            return angle;
+        }
+
+        /// <summary>
+        /// Invert a Vector3 along the desired axis/axes
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="axes"></param>
+        /// <returns>A Vector inverted along the desired axes</returns>
+        public static Vector3 InvertVector(Vector3 input, Axis axes)
+        {
+            var invertVector = Vector3.one;
+
+            if (axes.HasFlag(Axis.X))
+            {
+                invertVector.x = -1;
+            }
+            if (axes.HasFlag(Axis.Y))
+            {
+                invertVector.y = -1;
+            }
+            if (axes.HasFlag(Axis.Z))
+            {
+                invertVector.z = -1;
+            }
+
+            var output = Vector3.Scale(input, invertVector);
+
+            return output;
+        }
+
+
+        /// <summary>
+        /// Invert a Vector2 along the desired axes
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="axes"></param>
+        /// <returns>A Vector inverted along the desired axes</returns>
+        public static Vector2 InvertVector(Vector2 input, Axis axes)
+        {
+            var invertVector = Vector2.one;
+
+            if (axes.HasFlag(Axis.X))
+            {
+                invertVector.x = -1;
+            }
+            if (axes.HasFlag(Axis.Y))
+            {
+                invertVector.y = -1;
+            }
+
+            var output = Vector2.Scale(input, invertVector);
+
+            return output;
+        }
+
+        public static Vector3 LerpByDistance(Vector3 origin, Vector3 destination, float distance)
+        {
+            Vector3 direction = destination - origin;
+            Vector3 lerpVector = origin + (distance * direction);
+            return lerpVector;
+        }
+
+        public static Vector2 LerpByDistance(Vector2 origin, Vector2 destination, float distance)
+        {
+            Vector2 direction = destination - origin;
+            Vector2 lerpVector = origin + (distance * direction);
+            return lerpVector;
+        }
+
+        /// <summary>
+        /// Get the point of intersection between two lines
+        /// </summary>
+        /// <param name="pointA">Endpoint of the first line</param>
+        /// <param name="directionA">Tangent/Direction at the endpoint of the first line</param>
+        /// <param name="pointB">Endpoint of the second line</param>
+        /// <param name="directionB">Tangent/Direction at the endpoint of the second line</param>
+        /// <returns>Points where the two lines intersect</returns>
+        public static Vector3 GetIntersectionPoint(Vector3 pointA, Vector3 directionA, Vector3 pointB, Vector3 directionB)
+        {
+            Vector2 p1 = new Vector2(pointA.x, pointA.z);
+            Vector2 p2 = new Vector2(pointB.x, pointB.z);
+
+            Vector2 dir1 = new Vector2(directionA.x, directionA.z).normalized;
+            Vector2 dir2 = new Vector2(directionB.x, directionB.z).normalized;
+
+            Vector2 end1 = p1 + dir1;
+            Vector2 end2 = p2 + dir2;
+
+            // calculate the gradients/slopes
+            float m1 = (end1.y - p1.y) / (end1.x - p1.x);
+            float m2 = (end2.y - p2.y) / (end2.x - p2.x);
+
+            // Get the y-intercepts
+            float b1 = p1.y - (m1 * p1.x);
+            float b2 = p2.y - (m2 * p2.x);
+
+            // Solve for x
+            float x = (b2 - b1) / (m1 - m2);
+
+            // Solve for y
+            float y = (pointA.y + pointB.y) / 2;
+
+            // Solve for z
+            float z = m1 * x + b1;
+
+            return new Vector3(x, y, z);
+        }
+    }
+
+    [System.Flags]
+    public enum Axis
+    { 
+        X = 0,
+        Y = 1,
+        Z = 2,
+        All = X | Y | Z
+    }
+}
+
+
