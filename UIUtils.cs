@@ -8,5 +8,10 @@ namespace BabbittsUnityUtils
         {
             GUIUtility.systemCopyBuffer = text;
         }
+
+        public static string PasteFromClipboard()
+        {
+            return GUIUtility.systemCopyBuffer;
+        }
     }
 }
