@@ -97,6 +97,6 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
-NetworkUtils/
-NetworkUtils.meta
-!NetworkUtils.unitypackage
+
+# Optional Network Packages
+!Babbits-Unity-Network-Utils.unitypackage
