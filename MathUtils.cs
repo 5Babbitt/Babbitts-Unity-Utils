@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 namespace BabbittsUnityUtils
@@ -168,7 +168,7 @@ namespace BabbittsUnityUtils
         }
     }
 
-    [System.Flags]
+    [Flags]
     public enum Axis
     { 
         X = 0,

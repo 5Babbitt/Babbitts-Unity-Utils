@@ -32,7 +32,7 @@ namespace BabbittsUnityUtils
         private static void CreateDefaultSystemsSetup()
         {
             // Create Resources folder if it doesn't exist
-            string resourcesPath = "Assets/Resources";
+            string resourcesPath = "Assets/_Project/Resources";
             if (!Directory.Exists(resourcesPath))
             {
                 Directory.CreateDirectory(resourcesPath);
@@ -42,18 +42,20 @@ namespace BabbittsUnityUtils
 
             // Create Systems prefab
             string prefabPath = $"{resourcesPath}/Systems.prefab";
-            if (!File.Exists(prefabPath))
-            {
-                GameObject systemsObject = new GameObject("Systems");
+            
+            if (File.Exists(prefabPath)) return;
+            
+            GameObject systemsObject = new GameObject("Systems");
 
-                // Save as prefab
-                PrefabUtility.SaveAsPrefabAsset(systemsObject, prefabPath);
-                DestroyImmediate(systemsObject);
+            systemsObject.AddComponent<AppManager>();
 
-                AssetDatabase.Refresh();
-                Debug.Log($"[BabbittsUnityUtils] Created Systems prefab at {prefabPath}");
-                Debug.Log("[BabbittsUnityUtils] Please add your system components to the Systems prefab in the Resources folder.");
-            }
+            // Save as prefab
+            PrefabUtility.SaveAsPrefabAsset(systemsObject, prefabPath);
+            DestroyImmediate(systemsObject);
+
+            AssetDatabase.Refresh();
+            Debug.Log($"[BabbittsUnityUtils] Created Systems prefab at {prefabPath}");
+            Debug.Log("[BabbittsUnityUtils] Please add your system components to the Systems prefab in the Resources folder.");
         }
 #endif
     }
