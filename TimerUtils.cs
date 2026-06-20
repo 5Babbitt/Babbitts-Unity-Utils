@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BabbittsUnityUtils
 {
-    public class TimerUtils
+    public static class TimerUtils
     {
         /// <summary>
         /// Converts the float value of time to minutes and seconds and returns it as a string
@@ -39,7 +39,7 @@ namespace BabbittsUnityUtils
         /// Converts the float value to seconds represented in integers
         /// </summary>
         /// <param name="time"></param>
-        /// <returns>An interger value for seconds</returns>
+        /// <returns>An integer value for seconds</returns>
         public static int FloatToSeconds(float time)
         {
             int seconds = Mathf.CeilToInt(time);
