@@ -28,7 +28,7 @@ public class DisplayStyleConverterGroup
         
         // Hides display if value is less than 1
         floatToDisplayGroup.AddConverter((ref float value) =>
-            new StyleEnum<DisplayStyle>((value < 1) ? DisplayStyle.None : DisplayStyle.Flex));
+            new StyleEnum<DisplayStyle>((value < 0.01) ? DisplayStyle.None : DisplayStyle.Flex));
         
         ConverterGroups.RegisterConverterGroup(boolToDisplayGroup);
         ConverterGroups.RegisterConverterGroup(invertedBoolToDisplayGroup);
