@@ -13,6 +13,7 @@ public class DisplayStyleConverterGroup
     {
         var boolToDisplayGroup = new ConverterGroup("Bool to Display");
         var invertedBoolToDisplayGroup = new ConverterGroup("Invert Bool to Display");
+        var stringToDisplayGroup = new ConverterGroup("String to Display");
         
         boolToDisplayGroup.AddConverter((ref bool value) => 
             new StyleEnum<DisplayStyle>((value) ? DisplayStyle.Flex : DisplayStyle.None));
@@ -20,7 +21,12 @@ public class DisplayStyleConverterGroup
         invertedBoolToDisplayGroup.AddConverter((ref bool value) => 
             new StyleEnum<DisplayStyle>((value) ? DisplayStyle.None : DisplayStyle.Flex));
         
+        // Hides display if string is empty
+        stringToDisplayGroup.AddConverter((ref string value) => 
+            new StyleEnum<DisplayStyle>(string.IsNullOrEmpty(value) ? DisplayStyle.None : DisplayStyle.Flex));
+        
         ConverterGroups.RegisterConverterGroup(boolToDisplayGroup);
         ConverterGroups.RegisterConverterGroup(invertedBoolToDisplayGroup);
+        ConverterGroups.RegisterConverterGroup(stringToDisplayGroup);
     }
 }
